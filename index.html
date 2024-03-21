@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stopwatch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .heading {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: black;
+    }
+
+    .stopwatch-container {
+      border: 2px solid black;
+      border-radius: 5px;
+      padding: 20px;
+    }
+
+    .stopwatch {
+      text-align: center;
+    }
+
+    .time {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .button {
+      background-color: black;
+      color: aqua;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .container {
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="heading">Stopwatch</h1>
+  <div class="stopwatch-container">
+    <div class="stopwatch">
+      <div class="time" id="display">00:00:000</div>
+      <div class="buttons">
+        <button class="button" id="startStop" onclick="startStop()">Start</button>
+        <button class="button" onclick="pause()">Pause</button>
+        <button class="button" onclick="reset()">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let timer;
+  let running = false;
+  let time = 0;
+
+  function startStop() {
+    if (!running) {
+      running = true;
+      timer = setInterval(updateTime, 10);
+      document.getElementById('startStop').innerHTML = 'Stop';
+    } else {
+      running = false;
+      clearInterval(timer);
+      document.getElementById('startStop').innerHTML = 'Start';
+    }
+  }
+
+  function pause() {
+    if (running) {
+      running = false;
+      clearInterval(timer);
+      document.getElementById('startStop').innerHTML = 'Start';
+    }
+  }
+
+  function reset() {
+    running = false;
+    clearInterval(timer);
+    time = 0;
+    document.getElementById('display').innerHTML = '00:00:000';
+    document.getElementById('startStop').innerHTML = 'Start';
+  }
+
+  function updateTime() {
+    time += 10;
+    let milliseconds = time % 1000;
+    let seconds = Math.floor((time / 1000) % 60);
+    let minutes = Math.floor((time / (1000 * 60)) % 60);
+
+    milliseconds = milliseconds.toString().padStart(3, '0');
+    seconds = seconds.toString().padStart(2, '0');
+    minutes = minutes.toString().padStart(2, '0');
+
+    document.getElementById('display').innerHTML = `${minutes}:${seconds}:${milliseconds}`;
+  }
+</script>
+
+</body>
+</html>
